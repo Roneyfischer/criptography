@@ -2,8 +2,11 @@ import Criptography from "../../3.controller/class/Criptography.js";
 
 const requestDriver = async function (reqBody) {
   return await new Criptography()[`${reqBody.type}`](
-    reqBody.data,
-    reqBody.pwdOrHash
+    reqBody.alg,
+    reqBody.pwdOrHash,
+    reqBody.data, 
+    reqBody.dataTypeOutput,
+    reqBody.iv
   );
 };
 

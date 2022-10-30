@@ -26,31 +26,15 @@ class Criptography {
   }
 
   //AES:
-  encryptAes(data, pwd) {
-    const dataTypeInput = "utf8";
-    const dataTypeOutput = "hex";
-    this.setEncryptedData = cryptoOperator.encryptAes(
-      alg,
-      pwd,
-      data,
-      dataTypeInput,
-      dataTypeOutput
-    );
-    return this.getEncryptedData;
+  encryptAes(alg, pwd, data, dataTypeOutput, iv) {
+    console.log(alg, pwd, data, dataTypeOutput, iv)
+        return cryptoOperator.encryptAes(alg, pwd, data, dataTypeOutput, iv);
   }
 
-  decryptAes(data, pwd) {
-    const dataTypeInput = "hex";
-    const dataTypeOutput = "utf8";
+  decryptAes(alg, pwd, data, dataTypeOutput, iv) {
+    console.log(alg, pwd, data, dataTypeOutput, iv)
 
-    this.setEncryptedData = cryptoOperator.decryptAes(
-      alg,
-      pwd,
-      data,
-      dataTypeInput,
-      dataTypeOutput
-    );
-    return this.getEncryptedData;
+    return cryptoOperator.decryptAes(alg, pwd, data, dataTypeOutput, iv );
   }
 }
 
