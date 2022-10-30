@@ -1,3 +1,6 @@
+//este arquivo contém a classe de criptografia.
+//escolhi trabalhar com classe e não diretamente com objeto para fins didáticos (uso de classes)
+
 import cryptoOperator from "../../2.service/busnessRoule/cryptoOperator.js";
 
 const alg = "aes-128-ccm";

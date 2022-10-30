@@ -1,3 +1,5 @@
+//este arquivo contém as funções de criptografia e descriptografia propriamente ditas
+//estas funções são chamadas na classe Criptography
 import argon2, { hash } from "argon2";
 import argon2i from "argon2";
 const { createHmac } = await import("node:crypto");
