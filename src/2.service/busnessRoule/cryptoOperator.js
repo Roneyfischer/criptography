@@ -1,15 +1,16 @@
 //este arquivo contém as funções de criptografia e descriptografia propriamente ditas
 //estas funções são chamadas na classe Criptography
 import argon2, { hash } from "argon2";
-import argon2i from "argon2";
 const { createHmac } = await import("node:crypto");
 import nodeCrypto from "node:crypto";
+import errorHandling from "./errorHandling/errorHandling.js"
 
 //
 //ARGON2
 //
 
 const encryptArgon2 = async function (data) {
+  try{
   const hash = await argon2.hash(data, {
     type: argon2.argon2i,
     hashLength: 512,
@@ -17,21 +18,21 @@ const encryptArgon2 = async function (data) {
     memoryCost: 65536,
   });
   console.log(hash);
-  return `Encryptation has ben sucess. Your data is: ${hash}`;
+  return `Encryption was successful. Your data is: ${hash}`;
+} catch(error){return errorHandling(error)}
 };
-//
-//
+
 const verifyArgon2 = async function (data, longHash) {
   try {
     if (await argon2.verify(longHash, data)) {
-      return "Password match";
+      return "String match";
     } else {
-      return "Password did not match";
+      return "String did not match";
     }
-  } catch (err) {
-    return `Unexpected error on verify password`;
-  }
+  } catch (error) {return errorHandling(error) }
 };
+
+
 
 //
 //AES
@@ -39,6 +40,7 @@ const verifyArgon2 = async function (data, longHash) {
 
 const encryptAes = async function (alg, pwd, data, dataTypeOutput) {
   // const alg = "aes-256-cbc"
+  try {
   const iv = Buffer.from(nodeCrypto.randomBytes(16));
   let key = nodeCrypto.createHash("sha256").update(pwd).digest("base64").substr(0, 32);
 
@@ -52,21 +54,25 @@ const encryptAes = async function (alg, pwd, data, dataTypeOutput) {
   ]).toString(dataTypeOutput);
 
   return `data encrypted: ${finalEncrypted}; iv: ${iv.toString("hex")}`;
+} catch(error){return errorHandling(error)}
 };
-//
-//
+
+
 const decryptAes = async function (alg, pwd, data, dataTypeOutput, iv) {
-  // const alg = "aes-256-cbc"
+  
+  try {
   
   let key = nodeCrypto.createHash("sha256").update(pwd).digest("base64").substr(0, 32);
 
-  const decipherText = nodeCrypto.createDecipheriv(alg, Buffer.from(key), Buffer.from(iv, "hex"));
+  const decipherText =  nodeCrypto.createDecipheriv(alg, Buffer.from(key), Buffer.from(iv, "hex"));
 
   const decrypted = decipherText.update(Buffer.from(data, 'hex'));
-
-  const finalDecrypted = Buffer.concat([decrypted,  decipherText.final()]).toString();
-
-  return `IV: ${iv.toString(dataTypeOutput)}; Data decrypted: ${finalDecrypted}`;
+  
+  const finalDecrypted = Buffer.concat([decrypted,  decipherText.final()]).toString(dataTypeOutput);
+  
+  
+  return  `Data decrypted: ${finalDecrypted}`;
+  } catch(error){return errorHandling(error)}
 
 };
 

@@ -1,13 +1,15 @@
+
 import Criptography from "../../3.controller/class/Criptography.js";
+import errorHandling from "./../busnessRoule/errorHandling/errorHandling.js"
 
 const requestDriver = async function (reqBody) {
-  return await new Criptography()[`${reqBody.type}`](
-    reqBody.alg,
-    reqBody.pwdOrHash,
-    reqBody.data, 
-    reqBody.dataTypeOutput,
-    reqBody.iv
-  );
+try {
+  const criptographyObj = await new Criptography(reqBody)[`${reqBody.type}`]
+  const returnCriptographyObj = await criptographyObj(reqBody);
+
+  return returnCriptographyObj
+}catch(error) {return await errorHandling(error, reqBody)} //esse retorno do erro poderia ser resolvido aqui, mas chamei uma função pra aplicar alguns conceitos
+
 };
 
 export default requestDriver;
@@ -31,6 +33,13 @@ export default requestDriver;
 //   );
 //
 //A segunda forma é colocar tudo em uma linha e atribuir à uma nova variável.
-//A terceira é colocar tudo em uma linha e direcionar diretamente ao "return", sem nova variável, como está implementado.
-//Optei por esta modalidade para diminuir o código.
+//A terceira é colocar tudo em uma linha e direcionar diretamente ao "return", sem nova variável, da seguinte forma:
+// return await new Criptography()[`${reqBody.type}`](
+  // reqBody.alg,
+  // reqBody.pwdOrHash,
+  // reqBody.data, 
+  // reqBody.dataTypeOutput,
+  // reqBody.iv
+// );
+//Optei pela modalidade mais extensa pra facilitar a compreensão por outros programdaores.
 ///////////////////////////////////////////////////////////////////////////////////////

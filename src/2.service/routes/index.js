@@ -6,7 +6,9 @@
 import general from "./general.js";
 
 const fRouter = (app) => {
+ 
   app.use("/crypto", general);
+
 };
 
 export default fRouter;

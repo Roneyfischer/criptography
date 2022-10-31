@@ -3,9 +3,17 @@
 
 import cryptoOperator from "../../2.service/busnessRoule/cryptoOperator.js";
 
-const alg = "aes-128-ccm";
+
 
 class Criptography {
+  
+
+  constructor(reqBody) {    
+    
+    const {alg, pwd, data, dataTypeOutput, iv} = reqBody
+  
+  }
+
   //SETTERS and  GETTERS:
 
   get getEncryptedData() {
@@ -17,24 +25,25 @@ class Criptography {
   }
 
   //ARGON2
-  async encryptArgon2(data) {
+  async encryptArgon2(reqBody) {
+    const {alg, pwdOrHash, data, dataTypeOutput, iv} = reqBody      
     return await cryptoOperator.encryptArgon2(data);
   }
 
-  async verifyArgon2(data, longHash) {
-    return await cryptoOperator.verifyArgon2(data, longHash);
+  async verifyArgon2(reqBody) {
+    const {alg, pwdOrHash, data, dataTypeOutput, iv} = reqBody
+    return await cryptoOperator.verifyArgon2(data, pwdOrHash);
   }
 
   //AES:
-  encryptAes(alg, pwd, data, dataTypeOutput, iv) {
-    console.log(alg, pwd, data, dataTypeOutput, iv)
-        return cryptoOperator.encryptAes(alg, pwd, data, dataTypeOutput, iv);
+  async encryptAes(reqBody) {
+    const {alg, pwdOrHash, data, dataTypeOutput, iv} = reqBody
+    return await cryptoOperator.encryptAes(alg, pwdOrHash, data, dataTypeOutput, iv);
   }
 
-  decryptAes(alg, pwd, data, dataTypeOutput, iv) {
-    console.log(alg, pwd, data, dataTypeOutput, iv)
-
-    return cryptoOperator.decryptAes(alg, pwd, data, dataTypeOutput, iv );
+  async decryptAes(reqBody) {
+    const {alg, pwdOrHash, data, dataTypeOutput, iv} = reqBody  
+    return await cryptoOperator.decryptAes(alg, pwdOrHash, data, dataTypeOutput, iv );
   }
 }
 
